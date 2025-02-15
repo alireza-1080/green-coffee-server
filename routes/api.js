@@ -4,7 +4,11 @@ const apiRouter = express.Router();
 
 apiRouter.get('/set-cookie', (_req, res) => {
   // Set a cookie with the name 'name' and the value 'express'
-  res.cookie('name', 'express');
+  res.cookie('name', 'express', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'none',
+  });
 
   // Send a response to the client
   res.json('cookie set');
