@@ -11,7 +11,6 @@ app.use(cors(
     {
         origin: process.env.CORS_ORIGIN,
         credentials: true,
-        secure: true
     }
 ));
 app.use(helmet());
@@ -20,7 +19,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get('/', (_req, res) => {
-  res.send('Server is up and running');
+  res.json('Server is up and running');
 });
 
 app.use('/api', apiRouter);
