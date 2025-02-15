@@ -9,14 +9,15 @@ const app = express();
 app.use(cors(
     {
         origin: process.env.CORS_ORIGIN,
-        credentials: true
+        credentials: true,
+        secure: true
     }
 ));
 app.use(helmet());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.get('/', (req, res) => {
+app.get('/', (_req, res) => {
   res.send('Server is up and running');
 });
 
