@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import apiRouter from './routes/api.js';
 
 const app = express();
 
@@ -13,6 +14,6 @@ app.get('/', (req, res) => {
   res.send('Server is up and running');
 });
 
-// app.use('/api', apiRouter);
+app.use('/api', apiRouter);
 
 export default app;
