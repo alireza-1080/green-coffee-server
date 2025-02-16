@@ -12,6 +12,7 @@ apiRouter.post('/set-cookie', (_req, res) => {
     httpOnly: true,
     secure: true,
     sameSite: 'none',
+    path: '/',
   });
 
   // Send a response to the client

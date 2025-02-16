@@ -10,7 +10,6 @@ const app = express();
 app.use(cors({
     origin: process.env.CORS_ORIGIN,
     credentials: true,
-    sameSite: 'none',
 }));
 app.use(helmet());
 app.use(express.json());
