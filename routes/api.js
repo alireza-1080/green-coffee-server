@@ -2,6 +2,10 @@ import express from 'express';
 
 const apiRouter = express.Router();
 
+apiRouter.get('/', (_req, res) => {
+  res.json('Server is up and running');
+});
+
 apiRouter.get('/set-cookie', (_req, res) => {
   // Set a cookie with the name 'name' and the value 'express'
   res.cookie('name', 'express', {
