@@ -6,7 +6,7 @@ apiRouter.get('/', (_req, res) => {
   res.json('Server is up and running');
 });
 
-apiRouter.get('/set-cookie', (_req, res) => {
+apiRouter.post('/set-cookie', (_req, res) => {
   // Set a cookie with the name 'name' and the value 'express'
   res.cookie('name', 'express', {
     httpOnly: true,
@@ -18,7 +18,7 @@ apiRouter.get('/set-cookie', (_req, res) => {
   res.json('cookie set');
 });
 
-apiRouter.get('/delete-cookie', (_req, res) => {
+apiRouter.post('/delete-cookie', (_req, res) => {
   // Clear the cookie with the name 'name'
   res.clearCookie('name');
 
