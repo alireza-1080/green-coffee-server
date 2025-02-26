@@ -1,10 +1,12 @@
 import express from 'express';
+import usersRouter from './users.js';
 
 const apiRouter = express.Router();
 
-apiRouter.get('/', (_req, res) => {
-  res.json('Server is up and running');
-});
+apiRouter.use('/users', usersRouter);
+
+
+//! Sample of setting and deleting cookies
 
 apiRouter.post('/set-cookie', (_req, res) => {
   // Set a cookie with the name 'name' and the value 'express'
