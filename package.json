@@ -21,6 +21,11 @@
     "helmet": "^8.0.0",
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.10.2"
+    "mongoose": "^8.10.2",
+    "whatwg-url": "^13.0.0",
+    "webidl-conversions": "^7.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   }
 }
