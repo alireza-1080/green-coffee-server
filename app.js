@@ -4,6 +4,7 @@ import helmet from 'helmet';
 import apiRouter from './routes/api.js';
 import 'dotenv/config';
 import cookieParser from 'cookie-parser';
+import errorHandler from './middlewares/errorHandler.js';
 
 const app = express();
 
@@ -21,5 +22,10 @@ app.get('/', (_req, res) => {
 });
 
 app.use('/api', apiRouter);
+
+
+
+
+app.use(errorHandler);
 
 export default app;
