@@ -1,6 +1,6 @@
 import joi from 'joi';
 
-const username = joi.string().trim().min(5).max(50).required().messages({
+const username = joi.string().trim().min(5).max(50).required().lowercase().messages({
     'string.base': 'Username must be a string',
     'string.empty': 'Username cannot be empty',
     'string.min': 'Username must be at least {#limit} characters long',

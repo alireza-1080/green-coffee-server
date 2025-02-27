@@ -12,54 +12,50 @@ const createUser = async (req, res) => {
     let { name, username, email, password, confirmPassword } = req.body;
 
     //! Validate name
-    const { validatedName, error: nameError } = nameValidator.validate(name);
-
+    const { value: validatedName, error: nameError } =
+      nameValidator.validate(name);
     if (nameError) {
-      throw new Error(nameError);
+      throw nameError;
     }
 
     //? Convert the name to title case
     name = validatedName.replace(/\b\w/g, (char) => char.toUpperCase());
 
-    name = validatedName;
-
     //! Validate username
-    const { validatedUsername, error: usernameError } = usernameValidator.validate(
-      username
-    );
+    const { value: validatedUsername, error: usernameError } =
+      usernameValidator.validate(username);
 
     if (usernameError) {
-      throw new Error(usernameError);
+      throw usernameError;
     }
 
+    //? Convert the username to lowercase
     username = validatedUsername;
 
     //! Validate email
-    const { validatedEmail, error: emailError } = emailValidator.validate(email);
+    const { value: validatedEmail, error: emailError } =
+      emailValidator.validate(email);
 
     if (emailError) {
-      throw new Error(emailError);
+      throw emailError;
     }
 
     email = validatedEmail;
 
     //! Validate password
-    const { validatedPassword, error: passwordError } = passwordValidator.validate(
-      password
-    );
+    const { error: passwordError } = passwordValidator.validate(password);
 
     if (passwordError) {
-      throw new Error(passwordError);
+      throw passwordError;
     }
 
     //! Check if password and confirmPassword match
     if (password !== confirmPassword) {
       throw new Error('Passwords do not match');
     }
-
     //! Hash the password
     const salt = await bcrypt.genSalt(12);
-    const hashedPassword = await bcrypt.hash(validatedPassword, salt);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
     //! Set hashed password to password
     password = hashedPassword;
@@ -74,7 +70,7 @@ const createUser = async (req, res) => {
     }
 
     //! Create sample user object
-    const sampleUser ={
+    const sampleUser = {
       name,
       username,
       email,
@@ -91,8 +87,18 @@ const createUser = async (req, res) => {
 
     //! Send a success response
     return res.status(201).json({ message: 'User created successfully' });
-
   } catch (error) {
+    if (error.code === 11000) {
+      const field = Object.keys(error.keyPattern)[0];
+      const customMessages = {
+        email: 'Email address is already registered',
+        username: 'Username is already taken',
+      };
+      return res.status(409).json({
+        message: customMessages[field] || `${field} already exists`,
+      });
+    }
+
     return res.status(400).json({ message: error.message });
   }
 };
