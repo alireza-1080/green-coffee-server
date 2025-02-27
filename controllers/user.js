@@ -18,6 +18,9 @@ const createUser = async (req, res) => {
       throw new Error(nameError);
     }
 
+    //? Convert the name to title case
+    name = validatedName.replace(/\b\w/g, (char) => char.toUpperCase());
+
     name = validatedName;
 
     //! Validate username
