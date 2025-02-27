@@ -9,7 +9,7 @@ const connectDB = async () => {
       useNewUrlParser: true,
       useUnifiedTopology: true,
       // Serverless-specific settings
-      maxPoolSize: 1, // Limit pool size for serverless
+      maxPoolSize: 10, // Limit pool size for serverless
       serverSelectionTimeoutMS: 5000, // Timeout after 5 seconds
       socketTimeoutMS: 45000, // Close sockets after 45 seconds
       family: 4 // Use IPv4, skip trying IPv6
