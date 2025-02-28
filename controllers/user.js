@@ -103,4 +103,77 @@ const createUser = async (req, res) => {
   }
 };
 
-export { createUser };
+const loginUser = async (req, res) => {
+  try {
+    //! Get identifier, password and rememberMe from req.body
+    let { identifier, password, rememberMe } = req.body;
+
+    console.log(identifier)
+
+    //! Make sure identifier is all lowercase
+    identifier = identifier.toLowerCase();
+
+    //! Check if identifier is a valid email
+    const { value: validatedEmail, error: emailError } =
+      emailValidator.validate(identifier);
+
+    //! Check if identifier is a valid username
+    const { value: validatedUsername, error: usernameError } =
+      usernameValidator.validate(identifier);
+
+    if (emailError && usernameError) {
+      throw new Error('Invalid email or username');
+    }
+
+    //! Check if password is a valid password
+    const { error: passwordError } = passwordValidator.validate(password);
+
+    if (passwordError) {
+      throw passwordError;
+    }
+
+    //! Check if there is a user with the email or username
+    const user = await User.findOne({
+      $or: [{ email: validatedEmail }, { username: validatedUsername }],
+    });
+
+    if (!user) {
+      throw new Error('Invalid credentials');
+    }
+
+    //! Check if password matches
+    const isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch) {
+      throw new Error('Invalid credentials');
+    }
+
+    //! Generate a token
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    const token = jwt.sign(payload, process.env.JWT_SECRET, {
+      expiresIn: rememberMe ? '30d' : '1d',
+    });
+
+    //! Set token in cookie
+    res.cookie('green-coffee-token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'none',
+      maxAge: rememberMe ? 30 * 24 * 60 * 60 * 1000 : 24 * 60 * 60 * 1000,
+    });
+
+    //! Send a success response
+    return res.status(200).json({ message: 'Login successful' });
+
+
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export { createUser, loginUser };
