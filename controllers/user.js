@@ -203,4 +203,16 @@ const isUserLoggedIn = async (req, res) => {
   }
 };
 
-export { createUser, loginUser, isUserLoggedIn };
+const logoutUser = async (req, res) => {
+  try {
+    //! Clear the cookie
+    res.clearCookie('green-coffee-token');
+
+    //! Send a success response
+    return res.status(200).json({ message: 'Logout successful' });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
+  }
+};
+
+export { createUser, loginUser, isUserLoggedIn, logoutUser };
